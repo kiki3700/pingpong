@@ -1,0 +1,31 @@
+version: '3.0'
+services:
+  ping:
+    image:  kiki3700/ping
+    restart: always
+    depends_on:
+      - zipkin
+    ports:
+      - "8080:8080"
+    networks:
+      - pingpong
+  pong:
+    image: kiki3700/pong
+    restart: always
+    depends_on:
+      - zipkin
+    ports:
+      - "8081:8081"
+    networks:
+      - pingpong
+  zipkin:
+    image: openzipkin/zipkin
+    restart: always
+    ports:
+      - "9411:9411"
+    networks:
+      - pingpong
+
+networks:
+  pingpong:
+    driver: bridge

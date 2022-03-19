@@ -1,0 +1,10 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: pong
+  sleuth:
+  sampler:
+    probability: 1.0
+  zipkin:
+    base-url: http://zipkin:9411

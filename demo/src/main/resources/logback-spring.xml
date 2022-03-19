@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logFile.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 하루 동안의 log를 남김 -->
+            <fileNamePattern>%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 30일동안, 총 최대 3GB의 log를 저장함-->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="com.example.demo.service.Info" level="info"/>
+    <logger name="com.example.demo.service.Debug" level="debug"/>
+    <logger name="com.example.demo.controller.MainController" level="trace"/>
+
+    <springProfile name="!prod">
+            <!-- turn OFF all logging (children can override) -->
+            <root level="off">
+                <appender-ref ref="STDOUT"/>
+            </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %msg%n
+                </pattern>
+            </encoder>
+        </appender>
+            <!-- turn OFF all logging (children can override) -->
+            <root level="off">
+                <appender-ref ref="FILE"/>
+                <appender-ref ref="STDOUT"/>
+            </root>
+    </springProfile>
+</configuration>
